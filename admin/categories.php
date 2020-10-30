@@ -14,7 +14,7 @@
                 <!-- Add Category Form-->
                 <div class="col-lg-12">
                     <h1 class="page-header">
-                        Welcome to Admin
+                        Categories
                         <small>Author</small>
                     </h1>
                     <div class="col-xs-6">
@@ -59,7 +59,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-
                             <?php findAllCat(); ?>
                             <?php deleteCat(); ?>
                             </tbody>

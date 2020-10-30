@@ -9,7 +9,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">CMS Admin</a>
+        <a class="navbar-brand" href="./index.php">CMS Admin</a>
     </div>
 
     <!-- Top Menu Items -->
@@ -42,7 +42,7 @@
                         class="fa fa-fw fa-wrench"></i> Posts <i class="fa fa-fw fa-caret-down"></i></a>
                 <ul id="posts_dropdown" class="collapse">
                     <li>
-                        <a href="#">View All Posts</a>
+                        <a href="./posts.php">View All Posts</a>
                     </li>
                     <li>
                         <a href="#">Add Posts</a>
@@ -50,7 +50,7 @@
                 </ul>
             </li>
             <li>
-                <a href="bootstrap-grid.html"><i class="fa fa-fw fa-folder"></i> Categories Page</a>
+                <a href="./categories.php"><i class="fa fa-fw fa-folder"></i> Categories Page</a>
             </li>
 
             <li>
