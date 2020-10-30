@@ -12,31 +12,38 @@
             <div class="row">
 
                 <!-- Add Category Form-->
-                <?php
-                $query = "SELECT * FROM categories";
-                $select_cat = mysqli_query($connection,$query);
-                ?>
                 <div class="col-lg-12">
                     <h1 class="page-header">
                         Welcome to Admin
                         <small>Author</small>
                     </h1>
                     <div class="col-xs-6">
-                    <?php
-                    if(isset($_POST["submit"])){
-                        echo "yes";
-                    }
 
-                    ?>
-                        <form action="./categories.php" method="post">
+                    <?php insert_cat(); ?>
+
+                        <form action="" method="post">
                             <div class="form-group">
-                                <label for="cat_title">Add Category</label>
+                                <label for="cat_title">New Category</label>
                                 <input class="form-control" type="text" name="cat_title">
                             </div>
                             <div class="form-group">
-                                <input class="btn btn-primary" type="submit" name="submit" value="Add Category">
+                                <input class="btn btn-primary" type="submit" name="submit" value="Add">
                             </div>
                         </form>
+
+                        <hr>
+
+                        <?php
+
+                        // UPDATE AND INCLUDE QUERY
+
+                        if(isset($_GET['edit'])){
+                            $cat_id = $_GET['edit'];
+
+                            include "./includes/update_cat.php";
+                        }
+                        
+                        ?>
                     </div>
                     <!-- /.Add Category form -->
 
@@ -47,20 +54,14 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Category Title</th>
+                                    <th>Delete</th>
+                                    <th>Edit</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php
-                            while($row = mysqli_fetch_assoc($select_cat)){
-                                $cat_id = $row['cat_id'];
-                                $cat_title = $row['cat_title'];
 
-                                echo "<tr>";
-                                echo "<td>{$cat_id}</td>";
-                                echo "<td>{$cat_title}</td>";
-                                echo "</tr>";
-                            }
-                            ?>
+                            <?php findAllCat(); ?>
+                            <?php deleteCat(); ?>
                             </tbody>
                         </table>
                     </div>
