@@ -19,9 +19,32 @@
             <!-- /.input-group -->
         </form>
         <!-- search form  -->
-
     </div>
+    <!-- /.Blog Search Well -->
 
+
+    <!-- Login Form -->
+    <?php if(!isset($_SESSION['username'])):?>
+        <div class="well">
+        <h4>Login</h4>
+        <form action="./includes/login.php" method="post">
+            <div class="form-group">
+                <input name="username" type="text" class="form-control" placeholder="Enter Username">
+            </div>
+            <div class="input-group">
+                <input name="password" type="password" class="form-control" placeholder="Enter Password">
+                <span class="input-group-btn">
+                    <button name="login" type="submit" class="btn btn-primary">Login</button>
+                </span>
+            </div>
+            <!-- /.input-group -->
+        </form>
+        <!-- search form  -->
+    </div>
+    
+    <!-- /.Login Form -->
+    <?php endif; ?>
+    
 
 
 
@@ -37,12 +60,14 @@
             <div class="col-lg-12">
                 <ul class="list-unstyled">
                     <?php
+                    
                     while($row = mysqli_fetch_assoc($select_cat_sidebar)){
                         $cat_id = $row['cat_id'];
                         $cat_title = $row['cat_title'];
-
-                        echo "<li><a href='#'>{$cat_title}</a></li>";
+    
+                        echo "<li><a href='./category.php?category=$cat_id'>{$cat_title}</a></li>";
                     }
+
                     ?>
                 </ul>
             </div>

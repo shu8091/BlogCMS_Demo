@@ -1,118 +1,175 @@
 <?php include "./includes/header.php"; ?>
 <?php include "./includes/nav.php"; ?>
 
+
 <!-- Page Content -->
 <div class="container">
 
     <div class="row">
 
-        <!-- Blog Post Content Column -->
-        <div class="col-lg-8">
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+            <?php
 
-            <!-- Blog Post -->
+            if(isset($_GET['p_id'])){
+                $the_post_id = $_GET['p_id'];
+                
+                $view_query = "UPDATE posts SET post_views_count = post_views_count + 1 WHERE post_id = $the_post_id ";
+                $send_query = mysqli_query($connection,$view_query);
 
-            <!-- Title -->
-            <h1>Blog Post Title</h1>
+                if(!$send_query){
+                    die("Query Failed" . mysqli_error($connection));
+                }
 
-            <!-- Author -->
-            <p class="lead">
-                by <a href="#">Start Bootstrap</a>
-            </p>
+                if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin'){
+                    $query = "SELECT * FROM posts WHERE post_id = $the_post_id";
+                }else{
+                    $query = "SELECT * FROM posts WHERE post_id = $the_post_id AND post_status = 'published'";
+                }
+             
+                $select_all_post_query = mysqli_query($connection,$query);
 
-            <hr>
+                // ERROR MSG
+                if(!$select_all_post_query){
+                    echo "Error: " . mysqli_error($connection);
+                    exit();
+                }
 
-            <!-- Date/Time -->
-            <p><span class="glyphicon glyphicon-time"></span> Posted on August 24, 2013 at 9:00 PM</p>
+                if(mysqli_num_rows($select_all_post_query) < 1){
+                    echo "<h3 class='text-center'>No posts available</h3>";
+                }else{
 
-            <hr>
+                while($row = mysqli_fetch_assoc($select_all_post_query)){
+                    $post_title = $row['post_title'];
+                    $post_author = $row['post_author'];
+                    $post_date = $row['post_date'];
+                    $post_img = $row['post_img'];
+                    $post_content = $row['post_content'];
 
-            <!-- Preview Image -->
-            <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+                ?>
 
-            <hr>
+                <!-- First Blog Post -->
+                <h2>
+                    <a href="#"><?php echo $post_title; ?></a>
+                </h2>
+                <p class="lead">
+                    by <a href="index.php"><?php echo $post_author; ?></a>
+                </p>
+                <p>
+                    <?php
+                        if (session_status() === PHP_SESSION_NONE) session_start();
+                        if(isset($_SESSION['user_role'])){
+                            if(isset($_GET['p_id'])){
+                                $the_post_id = $_GET['p_id'];
+                                echo "<i class='fa fa-pencil' aria-hidden='true'></i> <a href='./admin/posts.php?source=edit_post&p_id={$the_post_id}'>Edit Post</a>";
+                            }
+                        }
+                    ?>
+                </p>
+                <p><span class="glyphicon glyphicon-time"></span> <?php echo $post_date; ?></p>
+                <!-- <hr> -->
+                <img class="img-responsive" src="./images/<?php echo $post_img;?>" alt="">
+                <!-- <hr> -->
+                <p><?php echo $post_content; ?></p>
 
-            <!-- Post Content -->
-            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus, vero, obcaecati, aut,
-                error quam sapiente nemo saepe quibusdam sit excepturi nam quia corporis eligendi eos magni recusandae
-                laborum minus inventore?</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste
-                ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus,
-                voluptatibus.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, doloribus, dolorem iusto blanditiis unde
-                eius illum consequuntur neque dicta incidunt ullam ea hic porro optio ratione repellat perspiciatis.
-                Enim, iure!</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, nostrum, aliquid, animi, ut quas placeat
-                totam sunt tempora commodi nihil ullam alias modi dicta saepe minima ab quo voluptatem obcaecati?</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum, dolor quis. Sunt, ut, explicabo, aliquam
-                tenetur ratione tempore quidem voluptates cupiditate voluptas illo saepe quaerat numquam recusandae?
-                Qui, necessitatibus, est!</p>
+                <hr>
+                <?php } ?>
 
-            <hr>
+                <!-- Blog Comments -->
+                <?php
+                //CREATE COMMENT
 
-            <!-- Blog Comments -->
+                if(isset($_POST['create_comment'])){
+                    $the_post_id = $_GET['p_id'];
+                    $comment_author = $_POST['comment_author'];
+                    $comment_email = $_POST['comment_email'];
+                    $comment_content = $_POST['comment_content'];
 
-            <!-- Comments Form -->
-            <div class="well">
-                <h4>Leave a Comment:</h4>
-                <form role="form">
-                    <div class="form-group">
-                        <textarea class="form-control" rows="3"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-            </div>
+                    if(!empty($comment_author) && !empty($comment_email) && !empty($comment_content)){
 
-            <hr>
+                        $query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) ";
+                        $query .= "VALUES ($the_post_id, '{$comment_author}', '{$comment_email}', '{$comment_content}', 'approved', now()) ";
 
-            <!-- Posted Comments -->
+                        $create_comments_query = mysqli_query($connection,$query);
 
-            <!-- Comment -->
-            <div class="media">
-                <a class="pull-left" href="#">
-                    <img class="media-object" src="http://placehold.it/64x64" alt="">
-                </a>
-                <div class="media-body">
-                    <h4 class="media-heading">Start Bootstrap
-                        <small>August 25, 2014 at 9:30 PM</small>
-                    </h4>
-                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo.
-                    Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi
-                    vulputate fringilla. Donec lacinia congue felis in faucibus.
-                </div>
-            </div>
+                        if(!$create_comments_query){
+                            die('QUERY FAILED' . mysqli_error($connection));
+                        }
 
-            <!-- Comment -->
-            <div class="media">
-                <a class="pull-left" href="#">
-                    <img class="media-object" src="http://placehold.it/64x64" alt="">
-                </a>
-                <div class="media-body">
-                    <h4 class="media-heading">Start Bootstrap
-                        <small>August 25, 2014 at 9:30 PM</small>
-                    </h4>
-                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo.
-                    Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi
-                    vulputate fringilla. Donec lacinia congue felis in faucibus.
-                    <!-- Nested Comment -->
-                    <div class="media">
-                        <a class="pull-left" href="#">
-                            <img class="media-object" src="http://placehold.it/64x64" alt="">
-                        </a>
-                        <div class="media-body">
-                            <h4 class="media-heading">Nested Start Bootstrap
-                                <small>August 25, 2014 at 9:30 PM</small>
-                            </h4>
-                            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin
-                            commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce
-                            condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                        //COMMENT COUNT DYNAMICALLY
+                        // $query = "UPDATE posts SET post_comment_count = post_comment_count + 1 ";
+                        // $query .="WHERE post_id = $the_post_id";
+
+                        // $update_comment_count = mysqli_query($connection,$query);
+                        // header("Location: ./post.php?p_id=$the_post_id");
+                    }else{
+                        echo "<script>alert('Fields can not be empty')</script>";
+                    }
+                }           
+                ?>
+
+                <!-- Comments Form -->
+                <div class="well">
+                    <h4>Leave a Comment:</h4>
+                    <form action="" method="post" enctype="mutipart/form-data">
+                        <div class="form-group">
+                        <label for="comment_author">Name</label>
+                            <input class="form-control" type="text" name="comment_author">
                         </div>
-                    </div>
-                    <!-- End Nested Comment -->
+                        <div class="form-group">
+                            <label for="comment_email">Email</label>
+                            <input class="form-control" type="email" name="comment_email">
+                        </div>
+                        <div class="form-group">
+                            <label for="comment_content">Comment</label>
+                            <textarea class="form-control" rows="3" name="comment_content"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" name="create_comment">Submit</button>
+                    </form>
                 </div>
-            </div>
+                <!-- /.Comments Form -->
 
+                <hr>
+
+                <!-- Posted Comments -->
+
+                <?php
+                //SELECT COMMENT QUERY
+                $query = "SELECT * FROM comments WHERE comment_post_id = $the_post_id ";
+                $query .= "AND comment_status = 'approved' ";
+                $query .= "ORDER BY comment_id DESC ";
+                $select_comment_query = mysqli_query($connection,$query);
+                
+                if(!$select_comment_query){
+                    die("QUERY FAILED" . mysqli_error($connection));
+                }
+
+                while($row = mysqli_fetch_assoc($select_comment_query)){
+                    $comment_id = $row['comment_id'];
+                    $comment_content = $row['comment_content'];
+                    $comment_author = $row['comment_author'];
+                    $comment_date = $row['comment_date'];
+                ?>
+
+                <!-- Comment -->
+                <div class="media">
+                    <a class="pull-left" href="#">
+                        <img class="media-object" src="http://placehold.it/64x64" alt="">
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                        <?php echo $comment_author; ?>
+                            <small><?php echo $comment_date; ?></small>
+                        </h4>
+                        <?php echo $comment_content; ?>
+                    </div>
+                </div>
+            <?php } } }else{
+                header("Location: index.php");
+            }?>
+            <!-- /.Comment -->
         </div>
-
+        
         <!-- Blog Sidebar Widgets Column -->
         <?php include "./includes/sidebar.php"; ?>
 
@@ -121,5 +178,5 @@
 
     <hr>
 
-    <!-- Footer -->
-    <?php include "./includes/footer.php"?>
+<!-- Footer -->
+<?php include "./includes/footer.php"?>

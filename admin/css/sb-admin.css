@@ -222,3 +222,10 @@ ul.alert-dropdown {
 .panel-yellow a:hover {
     color: #df8a13;
 }
+
+
+/* view all posts */
+#bulkOptionsContainer {
+    padding: 0px;
+    margin-bottom: 20px;
+}

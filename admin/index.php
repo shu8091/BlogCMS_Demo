@@ -3,7 +3,6 @@
 <div id="wrapper">
 
     <?php include "./includes/admin_nav.php"; ?>
-    
 
     <div id="page-wrapper">
 
@@ -14,11 +13,14 @@
                 <div class="col-lg-12">
                     <h1 class="page-header">
                         Welcome to Admin
-                        <small>Author</small>
+                        <small><?php echo $_SESSION['username']; ?></small>
                     </h1>
                 </div>
             </div>
-            <!-- /.row -->
+
+            <?php include "./includes/admin_widgets.php"; ?>
+        
+            <?php include "./includes/admin_chart.php"; ?>
 
         </div>
         <!-- /.container-fluid -->

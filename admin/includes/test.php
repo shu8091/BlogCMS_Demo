@@ -131,3 +131,5 @@ while(list($key,$val) = each($grades2)){
 
 echo "總分: " . $sum2 . "平均: " . $avg2 . "<br>";
 ?>
+
+

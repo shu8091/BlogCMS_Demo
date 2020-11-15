@@ -14,18 +14,29 @@
 
     <!-- Top Menu Items -->
     <ul class="nav navbar-right top-nav">
+        <!-- <li><a>Users Online: <?php //echo users_online() ?></a></li> -->
+        <li><a href="">Users Online: <span class="usersonline"></span></a></li>
+
         <li><a href="../index.php">HOME SITE</a></li>
 
         <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b
-                    class="caret"></b></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>
+            <?php
+            
+            if(isset($_SESSION['username'])){
+                $username = $_SESSION['username'];
+                echo ' ' . $username . ' ';
+            }
+            
+            ?>
+            <b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li>
-                    <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                    <a href="./profile.php"><i class="fa fa-fw fa-user"></i> Profile</a>
                 </li>
                 <li class="divider"></li>
                 <li>
-                    <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                    <a href="../includes/logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                 </li>
             </ul>
         </li>
@@ -35,7 +46,7 @@
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav side-nav">
             <li>
-                <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                <a href="./index.php"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
             </li>
             <li>
                 <a href="javascript:;" data-toggle="collapse" data-target="#posts_dropdown"><i
@@ -45,7 +56,7 @@
                         <a href="./posts.php">View All Posts</a>
                     </li>
                     <li>
-                        <a href="#">Add Posts</a>
+                        <a href="./posts.php?source=add_post">Add Post</a>
                     </li>
                 </ul>
             </li>
@@ -54,22 +65,22 @@
             </li>
 
             <li>
-                <a href="blank-page.html"><i class="fa fa-fw fa-comment"></i> Comments </a>
+                <a href="./comments.php"><i class="fa fa-fw fa-comment"></i> Comments </a>
             </li>
             <li>
                 <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-user"></i> Users
                     <i class="fa fa-fw fa-caret-down"></i></a>
                 <ul id="demo" class="collapse">
                     <li>
-                        <a href="#">Dropdown Item</a>
+                        <a href="./users.php">View All Users</a>
                     </li>
                     <li>
-                        <a href="#">Dropdown Item</a>
+                        <a href="./users.php?source=add_user">Add User</a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="blank-page.html"><i class="fa fa-fw fa-user"></i> Profile </a>
+                <a href="./profile.php"><i class="fa fa-fw fa-user"></i> Profile </a>
             </li>
         </ul>
     </div>

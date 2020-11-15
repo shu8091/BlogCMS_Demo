@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,6 +17,11 @@
 
     <!-- Custom CSS -->
     <link href="css/blog-home.css" rel="stylesheet">
+
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="./admin/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

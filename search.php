@@ -9,6 +9,10 @@
 
         <!-- Blog Entries Column -->
         <div class="col-md-8">
+            <h1 class="page-header">
+                Search Result
+                <!-- <small>Secondary Text</small> -->
+            </h1>
 
             <?php
 
@@ -27,21 +31,15 @@
                if($count == 0) {
                    echo "<h1>No result</h1>";
                } else {
-
-
+                   
                 while($row = mysqli_fetch_assoc($search_query)){
                     $post_title = $row['post_title'];
                     $post_author = $row['post_author'];
                     $post_date = $row['post_date'];
                     $post_img = $row['post_img'];
-                    $post_content = $row['post_content'];
+                    $post_content = substr($row['post_content'],0,150);
     
-                ?>
-
-            <h1 class="page-header">
-                Page Heading
-                <small>Secondary Text</small>
-            </h1>
+            ?>
 
             <!-- First Blog Post -->
             <h2>
